@@ -1,4 +1,8 @@
+import { useState } from 'react';
+
 function App() {
+  let [searchCurrency, setSearchCurrency] = useState('');
+
   return (
     <section className="container mx-auto flex flex-col p-4">
       <div className="mt-4 mb-1">
@@ -12,6 +16,10 @@ function App() {
             </div>
             <input
               type="text"
+              value={searchCurrency}
+              onChange={(e) => {
+                setSearchCurrency(e.target.value);
+              }}
               className="focus:outline-1 outline-cyan-500 block rounded-md border-0 py-1.5 pl-7 pr-20
                         text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1
                         focus:ring-inset sm:text-sm sm:leading-6"
