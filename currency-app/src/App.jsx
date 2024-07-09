@@ -5,6 +5,7 @@ import {CurrencySearch} from "./components/CurrencySearch.jsx";
 function App() {
   const [currencyList, setCurrencyList] = useState([]);
   const [selectedCurrency, setSelectedCurrency] = useState();
+  const currencyLegend= useRef([])
 
   const onStartTrackCurrency = (newCurrency) => {
     const newCurrencyToTrack = {
@@ -17,6 +18,9 @@ function App() {
   const removeCurrency = (currencyToRemove) => {
      setCurrencyList(prevList =>
          prevList.filter(currency => currency !== currencyToRemove));
+     if (selectedCurrency?.name === currencyToRemove) {
+         currencyLegend.current = []
+     }
   }
 
   const onCurrencyPriceUpdated = (currencyToUpdate, newPrice) => {
@@ -25,6 +29,14 @@ function App() {
         ? {...currency, price: newPrice}
         : currency)
     )
+    if (selectedCurrency?.name === currencyToUpdate?.name) {
+        currencyLegend.current.push(newPrice)
+    }
+  }
+
+  const selectCurrency = (currency) => {
+      currencyLegend.current = [];
+      setSelectedCurrency(currency)
   }
 
   return (
@@ -36,7 +48,7 @@ function App() {
                           currency={currency}
                           onRemove={removeCurrency}
                           isSelected={selectedCurrency?.name === currency.name}
-                          onSelect={() => setSelectedCurrency(currency)}
+                          onSelect={selectCurrency}
                           onPriceUpdated={(currency, price) => {
                               onCurrencyPriceUpdated(currency, price)}
                           }
@@ -44,7 +56,8 @@ function App() {
           ))}
         </dl>
         <section className="mt-8">
-          {selectedCurrency?.name}
+          {selectedCurrency?.name}{': '}
+          {currencyLegend.current.join(',')}
           <div className="h-6">
             <h1 className="text-gray-500 font-medium">График цен: </h1>
           </div>

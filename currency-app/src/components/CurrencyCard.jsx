@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 
 export const CurrencyCard = ({onRemove, currency, onPriceUpdated, onSelect, isSelected}) => {
 
-
     useEffect(() => {
         const currencyReceivePriceInterval = setInterval(() => {
             onPriceUpdated(currency, Math.floor(Math.random() * 10) + 1)
@@ -10,11 +9,11 @@ export const CurrencyCard = ({onRemove, currency, onPriceUpdated, onSelect, isSe
         return () => {
             clearInterval(currencyReceivePriceInterval)
         }
-    }, []);
+    }, [isSelected]);
 
     return (
         <div
-            onClick={onSelect}
+            onClick={() => !isSelected ? onSelect(currency) : () => {}}
             className={`bg-gray-400 rounded-lg shadow-lg p-8 text-center cursor-pointer ${isSelected && 'outline-2 outline outline-gray-800'}`}
         >
             <h1 className="text-lg font-bold text-white mb-4">{currency.name} - USD </h1>
