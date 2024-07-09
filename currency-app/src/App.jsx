@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import {useRef, useState} from 'react';
 import {CurrencyCard} from "./components/CurrencyCard.jsx";
 import {CurrencySearch} from "./components/CurrencySearch.jsx";
 
 function App() {
-  let [currencyList, setCurrencyList] = useState([]);
+  const [currencyList, setCurrencyList] = useState([]);
+  const [selectedCurrency, setSelectedCurrency] = useState();
 
   const onStartTrackCurrency = (newCurrency) => {
-    let newCurrencyToTrack = {
+    const newCurrencyToTrack = {
       name: newCurrency,
       price: null,
     };
@@ -19,6 +20,7 @@ function App() {
   }
 
   const onCurrencyPriceUpdated = (currencyToUpdate, newPrice) => {
+    // Здесь нам нужно обновить данные для графика (или не здесь?)
     setCurrencyList((prevList) => prevList.map((currency) => currency.name === currencyToUpdate.name
         ? {...currency, price: newPrice}
         : currency)
@@ -33,10 +35,16 @@ function App() {
             <CurrencyCard key={idx}
                           currency={currency}
                           onRemove={removeCurrency}
-                          onPriceUpdated={(currency, price) => {onCurrencyPriceUpdated(currency,price)}}/>
+                          isSelected={selectedCurrency?.name === currency.name}
+                          onSelect={() => setSelectedCurrency(currency)}
+                          onPriceUpdated={(currency, price) => {
+                              onCurrencyPriceUpdated(currency, price)}
+                          }
+            />
           ))}
         </dl>
         <section className="mt-8">
+          {selectedCurrency?.name}
           <div className="h-6">
             <h1 className="text-gray-500 font-medium">График цен: </h1>
           </div>
