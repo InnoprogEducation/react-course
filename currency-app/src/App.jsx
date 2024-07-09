@@ -18,12 +18,22 @@ function App() {
          prevList.filter(currency => currency !== currencyToRemove));
   }
 
+  const onCurrencyPriceUpdated = (currencyToUpdate, newPrice) => {
+    setCurrencyList((prevList) => prevList.map((currency) => currency.name === currencyToUpdate.name
+        ? {...currency, price: newPrice}
+        : currency)
+    )
+  }
+
   return (
       <section className="container mx-auto flex flex-col p-4">
        <CurrencySearch onNewCurrency={onStartTrackCurrency}/>
         <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
           {currencyList.map((currency, idx) => (
-            <CurrencyCard key={idx} currency={currency} onRemove={removeCurrency}/>
+            <CurrencyCard key={idx}
+                          currency={currency}
+                          onRemove={removeCurrency}
+                          onPriceUpdated={(currency, price) => {onCurrencyPriceUpdated(currency,price)}}/>
           ))}
         </dl>
         <section className="mt-8">

@@ -1,4 +1,17 @@
-export const CurrencyCard = ({onRemove, currency}) => {
+import {useEffect, useState} from "react";
+
+export const CurrencyCard = ({onRemove, currency, onPriceUpdated}) => {
+
+
+    useEffect(() => {
+        const currencyReceivePriceInterval = setInterval(() => {
+            onPriceUpdated(currency, Math.floor(Math.random() * 10) + 1)
+        }, 3000)
+        return () => {
+            clearInterval(currencyReceivePriceInterval)
+        }
+    }, []);
+
     return (
         <div
             className="bg-gray-400 rounded-lg shadow-lg p-8 text-center cursor-pointer"
