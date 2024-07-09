@@ -14,6 +14,11 @@ function App() {
     setSearchCurrency('');
   };
 
+  const removeCurrency = (currencyToRemove) => {
+     setCurrencyList(prevList =>
+         prevList.filter(currency => currency !== currencyToRemove));
+  }
+
   return (
       <section className="container mx-auto flex flex-col p-4">
         <div className="mt-4 mb-1">
@@ -54,7 +59,9 @@ function App() {
               >
                 <h1 className="text-lg font-bold text-white mb-4">{currency.name} - USD </h1>
                 <p className="text-md text-white mb-8">{currency.price} $</p>
-                <button className="bg-white hover:bg-gray-100 text-red-500 text-xs font-semibold py-2 px-4 rounded">
+                <button
+                    onClick={() => removeCurrency(currency)}
+                    className="bg-white hover:bg-gray-100 text-red-500 text-xs font-semibold py-2 px-4 rounded">
                   Remove
                 </button>
               </div>
